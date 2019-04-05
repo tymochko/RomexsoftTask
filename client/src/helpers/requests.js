@@ -1,12 +1,12 @@
 import fetch from 'isomorphic-fetch';
 
-const extractJsonResponse = (response) => {
-  return response.clone().json()
-    .catch(e => {
-      console.error(e);
-      return response.clone().text();
-    });
-};
+// const extractJsonResponse = (response) => {
+//   return response.clone().json()
+//     .catch(e => {
+//       console.error(e);
+//       return response.clone().text();
+//     });
+// };
 
 // const jsonReqParams = {
 //     headers: {

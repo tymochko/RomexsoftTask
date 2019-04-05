@@ -1,4 +1,6 @@
-const filtersReducer = (state = 'showAll', action) => {
+const filtersInitialState = 'showAll';
+
+const filtersReducer = (state = filtersInitialState, action) => {
   return state;
 };
 
