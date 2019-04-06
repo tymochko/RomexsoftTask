@@ -1,5 +1,5 @@
 import { searchByQueryRequest } from '../helpers/requests';
-import { SEARCH_VIDEOS } from '../reducers/helpers/actionTypesNames';
+import { SEARCH_VIDEOS, SELECT_VIDEOS } from '../reducers/helpers/actionTypesNames';
 
 const searchVideos = (videos) => {
   return {
@@ -16,4 +16,11 @@ export const searchByQuery = (query, dispatch) => {
         return data;
       });
   }
+};
+
+export const selectVideos = (selectedVideos) => {
+  return {
+    type: SELECT_VIDEOS,
+    selectedVideos
+  };
 };

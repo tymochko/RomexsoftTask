@@ -3,7 +3,7 @@ import PropTypes from 'prop-types'
 import { connect } from 'react-redux';
 import { searchByQuery } from '../actions/videos';
 
-class SearchForm extends Component {
+class DisplayActions extends Component {
   static propTypes = {
     dispatch: PropTypes.func.isRequired
   };
@@ -28,19 +28,16 @@ class SearchForm extends Component {
 
   render() {
     return (
-      <form className="search-block" onSubmit={this.handleSubmit}>
-        <input
-          type="text"
-          value={this.state.value}
-          onChange={this.handleChange}
-          maxLength={120}
-        />
-        <button type="submit" value="Submit">
-          <img src="/img/search.png" alt="Search"/>
+      <div className="display-actions-block">
+        <button className="display-grid">
+          <img src="/img/grid.png" alt="Display as Grid"/>
         </button>
-      </form>
+        <button className="display-list">
+          <img src="/img/list.png" alt="Display as List"/>
+        </button>
+      </div>
     );
   }
 }
 
-export default connect()(SearchForm);
+export default connect()(DisplayActions);
