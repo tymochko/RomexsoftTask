@@ -1,33 +1,25 @@
 import fetch from 'isomorphic-fetch';
 
-// const extractJsonResponse = (response) => {
-//   return response.clone().json()
-//     .catch(e => {
-//       console.error(e);
-//       return response.clone().text();
-//     });
-// };
-
-// const jsonReqParams = {
-//     headers: {
-//         ['Accept']: 'application/json',
-//         ['Content-Type']: 'application/json',
-//         ['X-Requested-With']: 'XMLHttpRequest'
-//     },
-//     credentials: 'same-origin'
-// };
+const jsonReqParams = {
+    headers: {
+        ['Accept']: 'application/json',
+        ['Content-Type']: 'application/json',
+        ['X-Requested-With']: 'XMLHttpRequest'
+    },
+    credentials: 'same-origin'
+};
 
 /**
  * Get HTTP POST request parameters
  * @param {Object} data - data
  * @returns {Object} new jsonReqParams
  */
-// const getPostReqParams = (data) => {
-//     return Object.assign({}, jsonReqParams, {
-//         method: 'POST',
-//         body: data && JSON.stringify(data)
-//     });
-// };
+const getPostReqParams = (data) => {
+    return Object.assign({}, jsonReqParams, {
+        method: 'PATCH',
+        body: data && JSON.stringify(data)
+    });
+};
 
 /**
  * Search videos by query
@@ -39,15 +31,21 @@ export const searchByQueryRequest = (query) => {
     .then(res => res.clone().json());
 };
 
-// Add to favourite:
-//   http://localhost:6001/videos/0aEnnH6t8Ts(=id)
-//     (PATCH)
-// body should include:
-// {
-//   "isFavourite": true
-// }
-// if you want to add a video or be empty if you want to remove
-//
-// Get saved videos:
-//   http://localhost:6001/videos/favourites
-//     (GET)
+/**
+ * Update videos by ids
+ * @param {Object} video - video
+ * @returns {*} Promise
+ */
+export const addToFavouritesRequest = (video) => {
+  return fetch('/videos/' + video.id, getPostReqParams(video))
+    .then(res => res.clone().json());
+};
+
+/**
+ * Get favourite videos
+ * @returns {*} Promise
+ */
+export const getFavouritesRequest = () => {
+  return fetch('/videos/favourites')
+    .then(res => res.clone().json());
+};

@@ -2,9 +2,10 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types'
 import { connect } from 'react-redux';
 import { createSelector } from 'reselect';
+import classNames from 'classnames';
 import isEqual from 'lodash/isEqual';
 import { formatDate } from '../helpers/formatters';
-import { selectVideos } from '../actions/videos';
+import { selectVideosAction } from '../actions/videos';
 
 const CHECK_ALL = "CHECK_ALL";
 
@@ -22,8 +23,7 @@ class Videos extends Component {
 
   state = {
     checkedAllInput: false,
-    checkedVideos: null,
-    videos: null
+    checkedVideos: null
   };
 
   componentDidUpdate(prevProps) {
@@ -39,37 +39,31 @@ class Videos extends Component {
       checkedVideos: { ...this.state.checkedVideos, [name]: checked }
     };
 
-    let selectedVideos = {};
-
-    this.props.videos.forEach(v => {
-      if (nextState.checkedVideos[v.id]) {
-        selectedVideos[v.id] = v;
-      }
-    });
-
-    this.props.dispatch(selectVideos(selectedVideos));
+    this.props.dispatch(selectVideosAction(this.props.videos.filter(v => nextState.checkedVideos[v.id])));
 
     this.setState(nextState);
   }
 
   updateCheckAll(event) {
     const { checked } = event.target;
-    let result= null;
+    let selectedVideos = null;
 
     if (checked) {
-      result = {};
+      selectedVideos = {};
 
-      this.props.videos.forEach(v => result[v.id] = true);
+      this.props.videos.forEach(v => selectedVideos[v.id] = true);
     }
 
-    this.setState({ checkedVideos: result, checkedAllInput: checked });
+    this.props.dispatch(selectVideosAction(checked ? this.props.videos : []));
+    this.setState({ checkedVideos: selectedVideos, checkedAllInput: checked });
   }
 
   render() {
+    const { visibilityFilter } = this.props;
     const { checkedAllInput, checkedVideos, videos } = this.state;
 
     return videos && videos.length ? (
-      <div className='videos-block'>
+      <div className={classNames('videos-block', visibilityFilter)}>
         <div className="select-all-block">
           <input
             type="checkbox"
@@ -98,12 +92,15 @@ class Videos extends Component {
           );
         })}
       </div>
-    ) : null};
+    ) : (
+      <div className="no-results">No results here. Try to search for something else.</div>
+    )};
 }
 
 const selector = createSelector(
-  state => state.videos,
-  (videos) => ({ videos })
+  state => state.videosData.videos,
+  state => state.visibilityFilter,
+  (videos, visibilityFilter) => ({ videos, visibilityFilter })
 );
 
 export default connect(selector)(Videos);

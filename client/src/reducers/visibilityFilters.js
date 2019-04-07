@@ -1,7 +1,14 @@
-const filtersInitialState = 'showAll';
+import { TOGGLE_VISIBILITY } from './helpers/actionTypesNames';
 
-const filtersReducer = (state = filtersInitialState, action) => {
-  return state;
+const visibilityInitialState = 'display-grid';
+
+const visibilityReducer = (state = visibilityInitialState, action) => {
+  switch (action.type) {
+    case TOGGLE_VISIBILITY:
+      return action.visibilityFilter;
+    default:
+      return state;
+  }
 };
 
-export default filtersReducer;
+export default visibilityReducer;

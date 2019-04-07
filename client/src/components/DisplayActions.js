@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types'
 import { connect } from 'react-redux';
-import { searchByQuery } from '../actions/videos';
+import classNames from 'classnames';
+import { toggleVisibilityAction } from '../actions/visibilityFilters';
 
 class DisplayActions extends Component {
   static propTypes = {
@@ -10,31 +11,48 @@ class DisplayActions extends Component {
 
   constructor(props) {
     super(props);
-    this.state = { value: '' };
+    this.state = {
+      isGridActive: true,
+      isListActive: false
+    };
 
-    this.handleChange = this.handleChange.bind(this);
-    this.handleSubmit = this.handleSubmit.bind(this);
+    this.onGridClick = this.onGridClick.bind(this);
+    this.onListClick = this.onListClick.bind(this);
   }
 
-  handleChange(event) {
-    this.setState({value: event.target.value});
+  onGridClick() {
+    this.props.dispatch(toggleVisibilityAction('display-grid'));
+    this.setState({
+      isGridActive: true,
+      isListActive: false
+    });
   }
 
-  handleSubmit(event) {
-    event.preventDefault();
-
-    this.props.dispatch(searchByQuery(this.state.value.trim()));
+  onListClick() {
+    this.props.dispatch(toggleVisibilityAction('display-list'));
+    this.setState({
+      isGridActive: false,
+      isListActive: true
+    });
   }
 
   render() {
     return (
       <div className="display-actions-block">
-        <button className="display-grid">
-          <img src="/img/grid.png" alt="Display as Grid"/>
-        </button>
-        <button className="display-list">
-          <img src="/img/list.png" alt="Display as List"/>
-        </button>
+        <div className="buttons-group">
+          <button
+            className={classNames("display-grid", { active: this.state.isGridActive })}
+            onClick={this.onGridClick}
+          >
+            <img src="/img/grid.png" alt="Display as Grid"/>
+          </button>
+          <button
+            className={classNames("display-list", { active: this.state.isListActive })}
+            onClick={this.onListClick}
+          >
+            <img src="/img/list.png" alt="Display as List"/>
+          </button>
+        </div>
       </div>
     );
   }

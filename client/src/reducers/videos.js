@@ -1,16 +1,16 @@
-import { SEARCH_VIDEOS, SELECT_VIDEOS } from './helpers/actionTypesNames';
+import { SELECT_VIDEOS, UPDATE_VIDEOS_LIST } from './helpers/actionTypesNames';
 
 const videosInitialState = {
   videos: [],
-  selectedVideos: {}
+  selectedVideos: []
 };
 
 const videosReducer = (state = videosInitialState, action) => {
   switch (action.type) {
-    case SEARCH_VIDEOS:
-      return action.videos;
+    case UPDATE_VIDEOS_LIST:
+      return { ...state, videos: action.videos };
     case SELECT_VIDEOS:
-      return action.selectedVideos;
+      return { ...state, selectedVideos: action.selectedVideos };
     default:
       return state;
   }

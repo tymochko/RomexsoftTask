@@ -1,10 +1,10 @@
 import { combineReducers } from 'redux';
 import videosReducer from './videos';
-import filtersReducer from './visibilityFilters';
+import visibilityReducer from './visibilityFilters';
 
 const rootReducer = combineReducers({
-  videos: videosReducer,
-  filters: filtersReducer
+  videosData: videosReducer,
+  visibilityFilter: visibilityReducer
 });
 
 export default rootReducer;
